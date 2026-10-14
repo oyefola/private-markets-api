@@ -2,7 +2,7 @@
 
 RESTful API for managing private market funds, investors, and investments.
 
-This project implements the Titanbay private markets take-home task using TypeScript, Fastify, Prisma, and PostgreSQL.
+This project implements the  private markets take-home task using TypeScript, Fastify, Prisma, and PostgreSQL.
 
 ## Tech Stack
 
@@ -65,7 +65,7 @@ An investment links an investor to a fund.
 ```json
 {
   "id": "uuid",
-  "name": "Titanbay Growth Fund I",
+  "name": " Growth Fund I",
   "vintage_year": 2024,
   "target_size_usd": 250000000,
   "status": "Fundraising",
@@ -123,14 +123,14 @@ You will need:
 Create a `.env` file in the project root:
 
 ```env
-DATABASE_URL="postgresql://titanbay:titanbay@localhost:5432/titanbay_private_markets"
+DATABASE_URL="postgresql://:@localhost:5432/_private_markets"
 PORT=3000
 ```
 
 For tests, use a separate database:
 
 ```env
-TEST_DATABASE_URL="postgresql://titanbay:titanbay@localhost:5432/titanbay_private_markets_test"
+TEST_DATABASE_URL="postgresql://:@localhost:5432/_private_markets_test"
 ```
 
 A sample `.env.example` file is included.
@@ -197,7 +197,7 @@ Expected response:
 curl -X POST http://localhost:3000/funds \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Titanbay Growth Fund I",
+    "name": " Growth Fund I",
     "vintage_year": 2024,
     "target_size_usd": 250000000,
     "status": "Fundraising"
@@ -223,7 +223,7 @@ curl -X PUT http://localhost:3000/funds \
   -H "Content-Type: application/json" \
   -d '{
     "id": "<fund_id>",
-    "name": "Titanbay Growth Fund I",
+    "name": " Growth Fund I",
     "vintage_year": 2024,
     "target_size_usd": 300000000,
     "status": "Investing"
@@ -314,19 +314,19 @@ Integration tests cover the API routes using Fastify `app.inject()` and a real P
 Create the test database:
 
 ```bash
-docker exec titanbay-postgres sh -c 'createdb -U titanbay titanbay_private_markets_test || true'
+docker exec -postgres sh -c 'createdb -U  _private_markets_test || true'
 ```
 
 Run migrations against the test database:
 
 ```bash
-DATABASE_URL="postgresql://titanbay:titanbay@localhost:5432/titanbay_private_markets_test" npx prisma migrate deploy
+DATABASE_URL="postgresql://:@localhost:5432/_private_markets_test" npx prisma migrate deploy
 ```
 
 Run tests:
 
 ```bash
-DATABASE_URL="postgresql://titanbay:titanbay@localhost:5432/titanbay_private_markets_test" npm test
+DATABASE_URL="postgresql://:@localhost:5432/_private_markets_test" npm test
 ```
 
 ## Design Decisions
@@ -358,19 +358,3 @@ Investments are modelled as records linking one investor to one fund.
 
 The API follows the provided specification and implements `PUT /funds` with the fund `id` in the request body, rather than using `PUT /funds/:id`.
 
-## Assumptions
-
-* Authentication and authorization are out of scope.
-* Delete endpoints are out of scope because they are not included in the provided API specification.
-* Pagination, filtering, and sorting are out of scope.
-* Investor emails should be unique.
-* Multiple investments from the same investor into the same fund are allowed unless otherwise specified.
-* Monetary values are stored as decimals in PostgreSQL and returned as numbers in API responses.
-* `investment_date` is returned in `YYYY-MM-DD` format.
-* `created_at` is returned as an ISO date-time string.
-
-## AI Usage
-
-AI tools were used to support development planning, clarify private markets terminology, reason through REST API design, compare TypeScript/PostgreSQL framework options, design validation and testing requirements, and troubleshoot implementation issues.
-
-The implementation decisions, code structure, validation rules, tests, and final code were reviewed and adapted manually to fit the provided API specification.
